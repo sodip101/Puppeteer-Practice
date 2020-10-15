@@ -15,7 +15,8 @@ const scraper=async()=>{
             "Details": {
                 "Confirmed":allDataArray[nepalIndex+1],
                 "Deaths":allDataArray[nepalIndex+2],
-                "Recovered":allDataArray[nepalIndex+3]
+                "Recovered":allDataArray[nepalIndex+3],
+                "Active":(allDataArray[nepalIndex+1]-allDataArray[nepalIndex+2]-allDataArray[nepalIndex+3]).toString()
             }
         };
         return result;
