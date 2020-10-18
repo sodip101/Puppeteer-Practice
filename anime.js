@@ -16,11 +16,24 @@ const pageContent=async(url)=>{
 
 pageContent(url)
 .then((pageContent)=>{
+  const allAnimeData=[];
   const $=cheerio.load(pageContent);
-  const allData=$('div.seasonal-anime-list.js-seasonal-anime-list.js-seasonal-anime-list-key-1.clearfix').first();
-  
-  
-  
-  // console.log(allData.find('.anime-header').text());
+  const rawData=$('div.seasonal-anime-list.js-seasonal-anime-list.js-seasonal-anime-list-key-1.clearfix').first().find('div.seasonal-anime.js-seasonal-anime');
+  rawData.each((i,anime)=>{
+    let Anime={
+      "Anime":$(anime).find('.h2_anime_title').text(),
+      "Description":$(anime).find('.synopsis.js-synopsis').text(),
+      "Link":$(anime).find('.link-title').attr('href'),
+      "Episodes":$(anime).find('.eps').text().trim("\n"),
+      "Studio":$(anime).find('.producer').text().trim("\n")
+    }
+    if($(anime).find('div.image').find('img').attr('data-src')){
+      Anime["Poster"]=$(anime).find('div.image').find('img').attr('data-src')
+    }else{
+      Anime["Poster"]=$(anime).find('div.image').find('img').attr('src')
+    }
+    allAnimeData.push(Anime);
+  });
+  console.log(allAnimeData)
 })
 .catch(err=>console.log(err));
